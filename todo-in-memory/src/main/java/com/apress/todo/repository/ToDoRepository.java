@@ -3,6 +3,7 @@ package com.apress.todo.repository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,9 +49,11 @@ public class ToDoRepository implements CommonRepository<ToDo>{
 
 	@Override
 	public Iterable<ToDo> findAll() {
+		Comparator<ToDo> byToDoName= (a,b)->
+			a.getDescription().compareTo(b.getDescription());
 		return this.toDos.entrySet().stream()
-			.sorted()
-			.map(Map.Entry<String,ToDo>::getValue).collect(Collectors.toList());
+			.map(Map.Entry<String,ToDo>::getValue)
+			.sorted(byToDoName).collect(Collectors.toList());
 	}
 
 	
