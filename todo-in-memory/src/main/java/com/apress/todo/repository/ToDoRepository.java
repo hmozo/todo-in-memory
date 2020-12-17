@@ -1,0 +1,57 @@
+package com.apress.todo.repository;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Repository;
+
+import com.apress.todo.domain.ToDo;
+
+@Repository
+public class ToDoRepository implements CommonRepository<ToDo>{
+
+	private Map<String, ToDo> toDos= new HashMap<>();
+
+	@Override
+	public ToDo save(ToDo domain) {
+		ToDo result= toDos.get(domain.getId());
+		if(result!=null) {
+			result.setModified(LocalDateTime.now());
+			result.setDescription(domain.getDescription());
+			result.setCompleted(domain.isCompleted());
+			domain= result;
+		}
+		toDos.put(domain.getId(), domain);
+		return toDos.get(domain.getId());
+	}
+
+	@Override
+	public Iterable<ToDo> save(Collection<ToDo> domains) {
+		domains.forEach(this::save);
+		return this.findAll();
+	}
+
+	@Override
+	public void delete(ToDo domain) {
+		toDos.remove(domain.getId());
+	}
+
+	@Override
+	public ToDo findById(String id) {
+		return toDos.get(id);
+	}
+
+	@Override
+	public Iterable<ToDo> findAll() {
+		return this.toDos.entrySet().stream()
+			.sorted()
+			.map(Map.Entry<String,ToDo>::getValue).collect(Collectors.toList());
+	}
+
+	
+}
