@@ -4,6 +4,7 @@ import java.net.URI;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
@@ -31,7 +32,7 @@ public class ToDoController {
 
 	private CommonRepository<ToDo> repository;
 	
-	ToDoController(CommonRepository<ToDo> repository){
+	ToDoController(@Qualifier("jdbc") CommonRepository<ToDo> repository){
 		this.repository= repository;
 	}
 	
