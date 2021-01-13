@@ -13,8 +13,8 @@ import org.springframework.stereotype.Repository;
 
 import com.apress.todo.domain.ToDo;
 
-@Repository
-public class ToDoRepository implements CommonRepository<ToDo>{
+@Repository ("in-memory")
+public class ToDoRepository_inmemory implements CommonRepository<ToDo>{
 
 	private Map<String, ToDo> toDos= new HashMap<>();
 
